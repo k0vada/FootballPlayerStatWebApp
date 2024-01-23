@@ -1,0 +1,754 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище KovalevDO_IDZModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Club">
+          <Key>
+            <PropertyRef Name="ClubId" />
+          </Key>
+          <Property Name="ClubId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="YearOfFoundation" Type="date" Nullable="false" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Club_Trophy">
+          <Key>
+            <PropertyRef Name="TrophyId" />
+            <PropertyRef Name="ClubId" />
+          </Key>
+          <Property Name="TrophyId" Type="int" Nullable="false" />
+          <Property Name="ClubId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Coach">
+          <Key>
+            <PropertyRef Name="CoachId" />
+          </Key>
+          <Property Name="CoachId" Type="int" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="PlayerId" Type="int" />
+        </EntityType>
+        <EntityType Name="CoachCareer">
+          <Key>
+            <PropertyRef Name="CareerId" />
+            <PropertyRef Name="CoachId" />
+          </Key>
+          <Property Name="CareerId" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" />
+          <Property Name="CoachId" Type="int" Nullable="false" />
+          <Property Name="ClubId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Game_Player">
+          <Key>
+            <PropertyRef Name="GameId" />
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="GameId" Type="int" Nullable="false" />
+          <Property Name="PlayerId" Type="int" Nullable="false" />
+          <Property Name="GoalsScored" Type="int" Nullable="false" />
+          <Property Name="GoalsConceded" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Age" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="PlayerId" Type="int" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PlayerCareer">
+          <Key>
+            <PropertyRef Name="CareerId" />
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="CareerId" Type="int" Nullable="false" />
+          <Property Name="Number" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" />
+          <Property Name="Position" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PlayerId" Type="int" Nullable="false" />
+          <Property Name="ClubId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="ReleCode" />
+          </Key>
+          <Property Name="ReleCode" Type="int" Nullable="false" />
+          <Property Name="RoleName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Trophy">
+          <Key>
+            <PropertyRef Name="TrophyId" />
+          </Key>
+          <Property Name="TrophyId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Login" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PasswordHash" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Salt" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserRole" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="Club_CC">
+          <End Role="Club" Type="Self.Club" Multiplicity="1" />
+          <End Role="CoachCareer" Type="Self.CoachCareer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Club">
+              <PropertyRef Name="ClubId" />
+            </Principal>
+            <Dependent Role="CoachCareer">
+              <PropertyRef Name="ClubId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Club_PC">
+          <End Role="Club" Type="Self.Club" Multiplicity="1" />
+          <End Role="PlayerCareer" Type="Self.PlayerCareer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Club">
+              <PropertyRef Name="ClubId" />
+            </Principal>
+            <Dependent Role="PlayerCareer">
+              <PropertyRef Name="ClubId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Coach_CC">
+          <End Role="Coach" Type="Self.Coach" Multiplicity="1" />
+          <End Role="CoachCareer" Type="Self.CoachCareer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Coach">
+              <PropertyRef Name="CoachId" />
+            </Principal>
+            <Dependent Role="CoachCareer">
+              <PropertyRef Name="CoachId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Coaching">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Coach" Type="Self.Coach" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="Coach">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ReleCode" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="UserRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Play">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Player" Type="Self.Player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="Player">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Player_Coach">
+          <End Role="Player" Type="Self.Player" Multiplicity="0..1" />
+          <End Role="Coach" Type="Self.Coach" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Coach">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="player_gaming">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="Game_Player" Type="Self.Game_Player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Game_Player">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Player_PC">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="PlayerCareer" Type="Self.PlayerCareer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="PlayerCareer">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Relationship1">
+          <End Role="Trophy" Type="Self.Trophy" Multiplicity="1" />
+          <End Role="Club_Trophy" Type="Self.Club_Trophy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trophy">
+              <PropertyRef Name="TrophyId" />
+            </Principal>
+            <Dependent Role="Club_Trophy">
+              <PropertyRef Name="TrophyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="win">
+          <End Role="Club" Type="Self.Club" Multiplicity="1" />
+          <End Role="Club_Trophy" Type="Self.Club_Trophy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Club">
+              <PropertyRef Name="ClubId" />
+            </Principal>
+            <Dependent Role="Club_Trophy">
+              <PropertyRef Name="ClubId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище KovalevDO_IDZModelContainer">
+          <EntitySet Name="Club" EntityType="Self.Club" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Club_Trophy" EntityType="Self.Club_Trophy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Coach" EntityType="Self.Coach" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CoachCareer" EntityType="Self.CoachCareer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Game_Player" EntityType="Self.Game_Player" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlayerCareer" EntityType="Self.PlayerCareer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trophy" EntityType="Self.Trophy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="Club_CC" Association="Self.Club_CC">
+            <End Role="Club" EntitySet="Club" />
+            <End Role="CoachCareer" EntitySet="CoachCareer" />
+          </AssociationSet>
+          <AssociationSet Name="Club_PC" Association="Self.Club_PC">
+            <End Role="Club" EntitySet="Club" />
+            <End Role="PlayerCareer" EntitySet="PlayerCareer" />
+          </AssociationSet>
+          <AssociationSet Name="Coach_CC" Association="Self.Coach_CC">
+            <End Role="Coach" EntitySet="Coach" />
+            <End Role="CoachCareer" EntitySet="CoachCareer" />
+          </AssociationSet>
+          <AssociationSet Name="Coaching" Association="Self.Coaching">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Coach" EntitySet="Coach" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_User" Association="Self.FK_Person_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="Play" Association="Self.Play">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Player" EntitySet="Player" />
+          </AssociationSet>
+          <AssociationSet Name="Player_Coach" Association="Self.Player_Coach">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="Coach" EntitySet="Coach" />
+          </AssociationSet>
+          <AssociationSet Name="player_gaming" Association="Self.player_gaming">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="Game_Player" EntitySet="Game_Player" />
+          </AssociationSet>
+          <AssociationSet Name="Player_PC" Association="Self.Player_PC">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="PlayerCareer" EntitySet="PlayerCareer" />
+          </AssociationSet>
+          <AssociationSet Name="Relationship1" Association="Self.Relationship1">
+            <End Role="Trophy" EntitySet="Trophy" />
+            <End Role="Club_Trophy" EntitySet="Club_Trophy" />
+          </AssociationSet>
+          <AssociationSet Name="win" Association="Self.win">
+            <End Role="Club" EntitySet="Club" />
+            <End Role="Club_Trophy" EntitySet="Club_Trophy" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="KovalevDO_IDZModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Club">
+          <Key>
+            <PropertyRef Name="ClubId" />
+          </Key>
+          <Property Name="ClubId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="YearOfFoundation" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="CoachCareers" Relationship="Self.Club_CC" FromRole="Club" ToRole="CoachCareer" />
+          <NavigationProperty Name="PlayerCareers" Relationship="Self.Club_PC" FromRole="Club" ToRole="PlayerCareer" />
+          <NavigationProperty Name="Trophies" Relationship="Self.Club_Trophy" FromRole="Club" ToRole="Trophy" />
+        </EntityType>
+        <EntityType Name="Coach">
+          <Key>
+            <PropertyRef Name="CoachId" />
+          </Key>
+          <Property Name="CoachId" Type="Int32" Nullable="false" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="PlayerId" Type="Int32" />
+          <NavigationProperty Name="CoachCareers" Relationship="Self.Coach_CC" FromRole="Coach" ToRole="CoachCareer" />
+          <NavigationProperty Name="Person" Relationship="Self.Coaching" FromRole="Coach" ToRole="Person" />
+          <NavigationProperty Name="Player" Relationship="Self.Player_Coach" FromRole="Coach" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="CoachCareer">
+          <Key>
+            <PropertyRef Name="CareerId" />
+            <PropertyRef Name="CoachId" />
+          </Key>
+          <Property Name="CareerId" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="CoachId" Type="Int32" Nullable="false" />
+          <Property Name="ClubId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Club" Relationship="Self.Club_CC" FromRole="CoachCareer" ToRole="Club" />
+          <NavigationProperty Name="Coach" Relationship="Self.Coach_CC" FromRole="CoachCareer" ToRole="Coach" />
+        </EntityType>
+        <EntityType Name="Game_Player">
+          <Key>
+            <PropertyRef Name="GameId" />
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="GameId" Type="Int32" Nullable="false" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="GoalsScored" Type="Int32" Nullable="false" />
+          <Property Name="GoalsConceded" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Player" Relationship="Self.player_gaming" FromRole="Game_Player" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Age" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Coaches" Relationship="Self.Coaching" FromRole="Person" ToRole="Coach" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Person_User" FromRole="Person" ToRole="User" />
+          <NavigationProperty Name="Players" Relationship="Self.Play" FromRole="Person" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Coaches" Relationship="Self.Player_Coach" FromRole="Player" ToRole="Coach" />
+          <NavigationProperty Name="Game_Player" Relationship="Self.player_gaming" FromRole="Player" ToRole="Game_Player" />
+          <NavigationProperty Name="Person" Relationship="Self.Play" FromRole="Player" ToRole="Person" />
+          <NavigationProperty Name="PlayerCareers" Relationship="Self.Player_PC" FromRole="Player" ToRole="PlayerCareer" />
+        </EntityType>
+        <EntityType Name="PlayerCareer">
+          <Key>
+            <PropertyRef Name="CareerId" />
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="CareerId" Type="Int32" Nullable="false" />
+          <Property Name="Number" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="ClubId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Club" Relationship="Self.Club_PC" FromRole="PlayerCareer" ToRole="Club" />
+          <NavigationProperty Name="Player" Relationship="Self.Player_PC" FromRole="PlayerCareer" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="ReleCode" />
+          </Key>
+          <Property Name="ReleCode" Type="Int32" Nullable="false" />
+          <Property Name="RoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_Role" FromRole="Role" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Trophy">
+          <Key>
+            <PropertyRef Name="TrophyId" />
+          </Key>
+          <Property Name="TrophyId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Clubs" Relationship="Self.Club_Trophy" FromRole="Trophy" ToRole="Club" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Salt" Type="Guid" Nullable="false" />
+          <Property Name="UserRole" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="People" Relationship="Self.FK_Person_User" FromRole="User" ToRole="Person" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_User_Role" FromRole="User" ToRole="Role" />
+        </EntityType>
+        <Association Name="Club_CC">
+          <End Role="Club" Type="Self.Club" Multiplicity="1" />
+          <End Role="CoachCareer" Type="Self.CoachCareer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Club">
+              <PropertyRef Name="ClubId" />
+            </Principal>
+            <Dependent Role="CoachCareer">
+              <PropertyRef Name="ClubId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Club_PC">
+          <End Role="Club" Type="Self.Club" Multiplicity="1" />
+          <End Role="PlayerCareer" Type="Self.PlayerCareer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Club">
+              <PropertyRef Name="ClubId" />
+            </Principal>
+            <Dependent Role="PlayerCareer">
+              <PropertyRef Name="ClubId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Coach_CC">
+          <End Role="Coach" Type="Self.Coach" Multiplicity="1" />
+          <End Role="CoachCareer" Type="Self.CoachCareer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Coach">
+              <PropertyRef Name="CoachId" />
+            </Principal>
+            <Dependent Role="CoachCareer">
+              <PropertyRef Name="CoachId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Coaching">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Coach" Type="Self.Coach" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="Coach">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Player_Coach">
+          <End Role="Player" Type="Self.Player" Multiplicity="0..1" />
+          <End Role="Coach" Type="Self.Coach" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Coach">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="player_gaming">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="Game_Player" Type="Self.Game_Player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Game_Player">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Play">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Player" Type="Self.Player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="Player">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Player_PC">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="PlayerCareer" Type="Self.PlayerCareer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="PlayerCareer">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ReleCode" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="UserRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Club_Trophy">
+          <End Role="Trophy" Type="Self.Trophy" Multiplicity="*" />
+          <End Role="Club" Type="Self.Club" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="KovalevDO_IDZEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clubs" EntityType="Self.Club" />
+          <EntitySet Name="Coaches" EntityType="Self.Coach" />
+          <EntitySet Name="CoachCareers" EntityType="Self.CoachCareer" />
+          <EntitySet Name="Game_Player" EntityType="Self.Game_Player" />
+          <EntitySet Name="People" EntityType="Self.Person" />
+          <EntitySet Name="Players" EntityType="Self.Player" />
+          <EntitySet Name="PlayerCareers" EntityType="Self.PlayerCareer" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="Trophies" EntityType="Self.Trophy" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="Club_CC" Association="Self.Club_CC">
+            <End Role="Club" EntitySet="Clubs" />
+            <End Role="CoachCareer" EntitySet="CoachCareers" />
+          </AssociationSet>
+          <AssociationSet Name="Club_PC" Association="Self.Club_PC">
+            <End Role="Club" EntitySet="Clubs" />
+            <End Role="PlayerCareer" EntitySet="PlayerCareers" />
+          </AssociationSet>
+          <AssociationSet Name="Coach_CC" Association="Self.Coach_CC">
+            <End Role="Coach" EntitySet="Coaches" />
+            <End Role="CoachCareer" EntitySet="CoachCareers" />
+          </AssociationSet>
+          <AssociationSet Name="Coaching" Association="Self.Coaching">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Coach" EntitySet="Coaches" />
+          </AssociationSet>
+          <AssociationSet Name="Player_Coach" Association="Self.Player_Coach">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="Coach" EntitySet="Coaches" />
+          </AssociationSet>
+          <AssociationSet Name="player_gaming" Association="Self.player_gaming">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="Game_Player" EntitySet="Game_Player" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_User" Association="Self.FK_Person_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Person" EntitySet="People" />
+          </AssociationSet>
+          <AssociationSet Name="Play" Association="Self.Play">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Player" EntitySet="Players" />
+          </AssociationSet>
+          <AssociationSet Name="Player_PC" Association="Self.Player_PC">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="PlayerCareer" EntitySet="PlayerCareers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="Club_Trophy" Association="Self.Club_Trophy">
+            <End Role="Trophy" EntitySet="Trophies" />
+            <End Role="Club" EntitySet="Clubs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище KovalevDO_IDZModelContainer" CdmEntityContainer="KovalevDO_IDZEntities">
+          <EntitySetMapping Name="Clubs">
+            <EntityTypeMapping TypeName="KovalevDO_IDZModel.Club">
+              <MappingFragment StoreEntitySet="Club">
+                <ScalarProperty Name="ClubId" ColumnName="ClubId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="YearOfFoundation" ColumnName="YearOfFoundation" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="City" ColumnName="City" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Coaches">
+            <EntityTypeMapping TypeName="KovalevDO_IDZModel.Coach">
+              <MappingFragment StoreEntitySet="Coach">
+                <ScalarProperty Name="CoachId" ColumnName="CoachId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CoachCareers">
+            <EntityTypeMapping TypeName="KovalevDO_IDZModel.CoachCareer">
+              <MappingFragment StoreEntitySet="CoachCareer">
+                <ScalarProperty Name="CareerId" ColumnName="CareerId" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="CoachId" ColumnName="CoachId" />
+                <ScalarProperty Name="ClubId" ColumnName="ClubId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Game_Player">
+            <EntityTypeMapping TypeName="KovalevDO_IDZModel.Game_Player">
+              <MappingFragment StoreEntitySet="Game_Player">
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="GoalsScored" ColumnName="GoalsScored" />
+                <ScalarProperty Name="GoalsConceded" ColumnName="GoalsConceded" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="People">
+            <EntityTypeMapping TypeName="KovalevDO_IDZModel.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Players">
+            <EntityTypeMapping TypeName="KovalevDO_IDZModel.Player">
+              <MappingFragment StoreEntitySet="Player">
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayerCareers">
+            <EntityTypeMapping TypeName="KovalevDO_IDZModel.PlayerCareer">
+              <MappingFragment StoreEntitySet="PlayerCareer">
+                <ScalarProperty Name="CareerId" ColumnName="CareerId" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="ClubId" ColumnName="ClubId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="KovalevDO_IDZModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="ReleCode" ColumnName="ReleCode" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trophies">
+            <EntityTypeMapping TypeName="KovalevDO_IDZModel.Trophy">
+              <MappingFragment StoreEntitySet="Trophy">
+                <ScalarProperty Name="TrophyId" ColumnName="TrophyId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="KovalevDO_IDZModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="Salt" ColumnName="Salt" />
+                <ScalarProperty Name="UserRole" ColumnName="UserRole" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Club_Trophy" TypeName="KovalevDO_IDZModel.Club_Trophy" StoreEntitySet="Club_Trophy">
+            <EndProperty Name="Trophy">
+              <ScalarProperty Name="TrophyId" ColumnName="TrophyId" />
+            </EndProperty>
+            <EndProperty Name="Club">
+              <ScalarProperty Name="ClubId" ColumnName="ClubId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

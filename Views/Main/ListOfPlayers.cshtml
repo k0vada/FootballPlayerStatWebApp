@@ -1,0 +1,46 @@
+﻿@model List<FootballPlayerStatWebApp.Models.ViewModels.PlayerDetailsVM>
+
+@{
+    ViewBag.Title = "ListOfPlayers";
+}
+
+<h2>Список игроков</h2>
+@if (User.IsInRole("Admin"))
+{
+    @Html.ActionLink("Добавить игрока", "CreatePlayer", "Main", new { @class = "btn btn-success" })
+}
+
+<div class="row">
+    <div class="col-md-2"><strong>ФИО</strong></div>
+    <div class="col-md-2"><strong>Номер</strong></div>
+    <div class="col-md-2"><strong>Позиция</strong></div>
+    <div class="col-md-2"><strong>Клуб</strong></div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="col-md-1"><strong>Подробнее</strong></div>
+        if (User.IsInRole("Admin"))
+        {
+            <div class="col-md-1"><strong>Удалить</strong></div>
+            <div class="col-md-1"><strong>Редактировать</strong></div>
+        }
+    }
+</div>
+
+@foreach (var player in Model)
+{
+<div class="row">
+    <div class="col-md-2">@($"{player.LastName} {player.FirstName}")</div>
+    <div class="col-md-2">@player.Number</div>
+    <div class="col-md-2">@player.Position</div>
+    <div class="col-md-2">@player.ClubName</div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="col-md-1">@Html.ActionLink("Подробнее", "PlayerDetails", "Main", new { playerId = player.PlayerId }, null)</div>
+        if (User.IsInRole("Admin"))
+        {
+            <div class="col-md-1">@Html.ActionLink("Удалить", "DeletePlayer", "Main", new { playerId = player.PlayerId }, null)</div>
+            <div class="col-md-1">@Html.ActionLink("Редактировать", "EditPlayer", "Main", new { playerId = player.PlayerId }, null)</div>
+        }
+    }
+</div>
+}

@@ -1,0 +1,49 @@
+﻿@model FootballPlayerStatWebApp.Models.ViewModels.PlayerDetailsVM
+
+@{
+    ViewBag.Title = "PlayerDetails";
+}
+
+<h2>Подробная ифномация</h2>
+
+<div>
+    <h4>Подробная информация о игроке</h4>
+    <hr />
+    <div class="container">
+        <div class="row bg-info">
+            <div class="col-md-2">@Html.LabelFor(m => m.LastName)</div>
+            <div class="col-md-4">@Html.DisplayFor(m => m.LastName)</div>
+            <div class="col-md-2">@Html.LabelFor(m => m.Number)</div>
+            <div class="col-md-4">@Html.DisplayFor(m => m.Number)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">@Html.LabelFor(m => m.FirstName)</div>
+            <div class="col-md-4">@Html.DisplayFor(m => m.FirstName)</div>
+            <div class="col-md-2">@Html.LabelFor(m => m.Position)</div>
+            <div class="col-md-4">@Html.DisplayFor(m => m.Position)</div>
+        </div>
+        <div class="row bg-info">
+            <div class="col-md-2">@Html.LabelFor(m => m.MiddleName)</div>
+            <div class="col-md-4">@Html.DisplayFor(m => m.MiddleName)</div>
+            <div class="col-md-2">@Html.LabelFor(m => m.ClubName)</div>
+            <div class="col-md-4">@Html.DisplayFor(m => m.ClubName)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">@Html.LabelFor(m => m.Age)</div>
+            <div class="col-md-4">@Html.DisplayFor(m => m.Age)</div>
+            <div class="col-md-2">@Html.LabelFor(m => m.StartDate)</div>
+            <div class="col-md-4">@Html.DisplayFor(m => m.StartDate)</div>
+        </div>
+        @if (Model.EndDate.HasValue)
+        {
+            <div class="row bg-info">
+                <div class="col-md-2">@Html.LabelFor(m => m.EndDate)</div>
+                <div class="col-md-4">@Html.DisplayFor(m => m.EndDate)</div>
+            </div>
+        }
+    </div>
+
+</div>
+<p>
+    @Html.ActionLink("Назад", "ListOfPlayers")
+</p>
